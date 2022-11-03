@@ -6,7 +6,7 @@ var baseURL;
 // } else {
 //     baseURL = "http://127.0.0.1:8000";
 // }
-baseURL = "https://cj-cafe-bc.herokuapp.com/";
+baseURL = "https://backend1.krishnashankar3.repl.co";
 
 const api = axios.create({
   baseURL: baseURL,
@@ -74,4 +74,35 @@ export default class API {
       });
     return posts;
   };
+  // Reviews
+  getReviews = async (item_id) => {
+    let url = "/reviews?item_id=" + item_id;
+    const reviews = await api
+      .get(url)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+    return reviews;
+  };
+  
+  writeReview = async (item_id, name, body, like_count) => {
+    const formData = new FormData();
+    formData.append("item", item_id);
+    formData.append("name", name);
+    formData.append("body", body);
+    formData.append("like_count", like_count);
+    const savedReview = await api
+      .post("/reviews/add", formData)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+    return savedReview;
+  };
+  
 }

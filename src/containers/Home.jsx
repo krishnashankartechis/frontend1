@@ -22,6 +22,7 @@ const Home = () => {
   const items = getItems(selector);
   const carts = getCarts(selector);
   const subtotal = getSubtotal(selector);
+  console.log('items',items)
 
   useEffect(() => {
     dispatch(fetchFromLocalStorage());
@@ -83,7 +84,7 @@ const Home = () => {
             </ul>
           </>
         )}
-        <ul class="items">{items && items.map((item) => showItem(item))}</ul>
+        <ul class="items">{items && items.results && items.results.map((item) => showItem(item))}</ul>
       </section>
 
       <Footer price={subtotal} showCartList={showCartList} setShowCartList={setShowCartList} />

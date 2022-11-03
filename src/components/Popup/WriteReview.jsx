@@ -4,9 +4,40 @@ import ImgReaction0 from "../../assets/img/reaction-0.svg";
 import ImgReaction1 from "../../assets/img/reaction-1.svg";
 import ImgReaction2 from "../../assets/img/reaction-2.svg";
 import ImgReaction3 from "../../assets/img/reaction-3.svg";
+import API from "../../API";
+ 
 
-const WriteReview = ({ setShowWriteReview }) => {
-  const [likeCount, setLikeCount] = useState(1);
+
+const api= new API();
+
+const WriteReview = ({ selectedItemId, setSelectedItemId, setShowWriteReview }) => {
+  
+  const [likeCount, setLikeCount] = useState(1),
+    [name,setName]= useState(""),
+    [body,setBody] = useState("");
+
+  const inputName = (event)=>{
+    setName(event.target.value);
+  };
+
+  const inputBody= (event)=>{
+    setBody(event.target.value);
+  };
+
+  const sendReviewButton = ()=>{
+    api.writeReview(selectedItemId,name,body,likeCount).then((
+      review)=>{
+        alert("Your review has been sent. Thank you for your review!");
+      setName("");
+      setBody("");
+      setLikeCount(1);
+      setSelectedItemId(null);
+      setShowWriteReview(false);
+        
+      });
+    
+  };
+  
 
   return (
     <section class="popup">
@@ -46,9 +77,9 @@ const WriteReview = ({ setShowWriteReview }) => {
                 )}
               </li>
             </ul>
-            <input type="text" name="name" placeholder="Enter your name" />
-            <textarea name="body" placeholder="Enter your review"></textarea>
-            <button>Send Review</button>
+            <input onChange={inputName} type="text" name="name" placeholder="Enter your name" required />
+            <textarea  onChange={inputBody}  name="body" placeholder="Enter your review" required ></textarea >
+            <button onClick={sendReviewButton}>Send Review</button>
           </div>
         </div>
       </div>
